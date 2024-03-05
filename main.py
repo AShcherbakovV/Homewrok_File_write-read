@@ -34,6 +34,33 @@ def shoplist_create(dishes: list, persons: int, cookbook): #В условии з
                 shop_list[ingr['ingredient name']]['quantity'] = shop_list[ingr['ingredient name']]['quantity'] + ingr.get('quantity') * persons
     return shop_list
 
+def file_from_files(path_list): #Функция слияния файлов
+    list_cort = []
+    file_list = []
+    for path_file in path_list:
+        f = open(path_file, 'r', encoding='utf-8')
+        file_list = f.readlines()
+        for elem in file_list:
+            elem.replace('\n', '')
+        list_cort.append((path_file, len(file_list), file_list))
+        f.close()
+
+    list_cort = sorted(list_cort, key=lambda x: x[1])
+    f = open('file from files.txt', 'w', encoding='utf-8')
+    for cort in list_cort:
+        f.write(cort[0] + '\n')
+        f.write(str(cort[1]) + '\n')
+        for line in cort[2]:
+            if line.find('\n') == -1:
+                f.write(line + '\n')
+            else:
+                f.write(line)
+    f.close()
+    return
+
 cook_book = create_dict_from_file('recepies.txt')
+
 print(cook_book['Фахитос'])
 print(shoplist_create(['Омлет', 'Фахитос'], 3, cook_book))
+
+file_from_files(['2.txt', '1.txt'])
